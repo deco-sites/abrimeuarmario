@@ -25,29 +25,38 @@ function Newsletter() {
   };
 
   return (
-    <div class="flex flex-col sm:flex-row items-center gap-6 sm:gap-20">
+    <div class="flex justify-between flex-col sm:flex-row items-center gap-6 sm:gap-20">
       <div class="flex flex-col gap-2 max-w-[400px]">
-        <span class="font-medium text-2xl text-primary-content">
-          Cadastre-se
+        <span class="text-base text-black font-semibold">
+          Cadastre-se para receber ofertas e descontos exclusivos
         </span>
-        <span class="text-sm text-primary-content">
-          Fique por dentro das novidades e ganhe 15% de desconto na primeira
-          compra. Para mais informações clique aqui.
+        <span class="text-sm font-normal ">
+          Inscreva-se para receber novidades, promoções, atualizações de estoque
+          e muito mais...
         </span>
       </div>
       <form
-        class="font-body text-body w-full sm:w-[408px] form-control"
+        class="font-body text-sm text-black w-full sm:w-[445px] form-control"
         onSubmit={handleSubmit}
       >
-        <div class="input-group">
+        <div class="flex gap-2.5">
           <input
             name="email"
-            class="flex-grow input input-primary"
-            placeholder="Seu e-mail"
+            class="flex-grow input input-primary rounded-none"
+            placeholder="Insira seu e-mail"
           />
-          <button class="btn disabled:loading" disabled={loading}>
-            Cadastrar
+          <button
+            class="btn disabled:loading text-base font-semibold rounded-none text-[#ffffff]"
+            disabled={loading}
+          >
+            Cadastrar-se
           </button>
+        </div>
+        <div className="text-info text-text-color font-normal pt-3">
+          A Abri meu Armário utiliza os seus dados preenchidos conforme a
+          finalidade definida na nossa Política de Privacidade. Ao concluir o
+          cadastro, você permite o tratamento dos dados pessoais para a
+          finalidade proposta.
         </div>
       </form>
     </div>

@@ -1,142 +1,176 @@
+import Icon from "$store/components/ui/Icon.tsx";
+import Button from "$store/components/ui/Button.tsx";
+import Slider from "$store/components/ui/Slider.tsx";
+import SliderJS from "$store/islands/SliderJS.tsx";
 import { Picture, Source } from "deco-sites/std/components/Picture.tsx";
+import { useId } from "preact/hooks";
 import type { Image as LiveImage } from "deco-sites/std/components/types.ts";
 
 export interface Banner {
-  srcMobile: LiveImage;
-  srcDesktop?: LiveImage;
-  /**
-   * @description Image alt text
-   */
+  /** @description desktop otimized image */
+  desktop: LiveImage;
+  /** @description mobile otimized image */
+  mobile: LiveImage;
+  /** @description Image's alt text */
   alt: string;
-  /**
-   * @description When you click you go to
-   */
-  href: string;
+  action?: {
+    /** @description when user clicks on the image, go to this link */
+    href: string;
+    /** @description Image text title */
+    title: string;
+    /** @description Image text subtitle */
+    subTitle: string;
+    /** @description Button label */
+    label: string;
+  };
 }
-
-export type BorderRadius =
-  | "none"
-  | "sm"
-  | "md"
-  | "lg"
-  | "xl"
-  | "2xl"
-  | "3xl"
-  | "full";
 
 export interface Props {
-  title?: string;
+  images?: Banner[];
   /**
-   * @description Default is 2 for mobile and all for desktop
+   * @description Check this option when this banner is the biggest image on the screen for image optimizations
    */
-  itemsPerLine: {
-    /** @default 2 */
-    mobile?: 1 | 2;
-    /** @default 4 */
-    desktop?: 1 | 2 | 4 | 6 | 8;
-  };
+  preload?: boolean;
   /**
-   * @description Item's border radius in px
+   * @title Autoplay interval
+   * @description time (in seconds) to start the carousel autoplay
    */
-  borderRadius: {
-    /** @default none */
-    mobile?: BorderRadius;
-    /** @default none */
-    desktop?: BorderRadius;
-  };
-  banners: Banner[];
+  interval?: number;
 }
 
-const MOBILE_COLUMNS = {
-  1: "grid-cols-1",
-  2: "grid-cols-2",
-};
+function BannerItem({ image, lcp }: { image: Banner; lcp?: boolean }) {
+  const {
+    alt,
+    mobile,
+    desktop,
+    action,
+  } = image;
 
-const DESKTOP_COLUMNS = {
-  1: "sm:grid-cols-1",
-  2: "sm:grid-cols-2",
-  4: "sm:grid-cols-4",
-  6: "sm:grid-cols-6",
-  8: "sm:grid-cols-8",
-};
-
-const RADIUS_MOBILE = {
-  "none": "rounded-none",
-  "sm": "rounded-sm",
-  "md": "rounded-md",
-  "lg": "rounded-lg",
-  "xl": "rounded-xl",
-  "2xl": "rounded-2xl",
-  "3xl": "rounded-3xl",
-  "full": "rounded-full",
-};
-
-const RADIUS_DESKTOP = {
-  "none": "sm:rounded-none",
-  "sm": "sm:rounded-sm",
-  "md": "sm:rounded-md",
-  "lg": "sm:rounded-lg",
-  "xl": "sm:rounded-xl",
-  "2xl": "sm:rounded-2xl",
-  "3xl": "sm:rounded-3xl",
-  "full": "sm:rounded-full",
-};
-
-export default function BannnerGrid({
-  title,
-  itemsPerLine,
-  borderRadius,
-  banners = [],
-}: Props) {
   return (
-    <section class="container w-full px-4 md:px-0 mx-auto">
-      {title &&
-        (
-          <div class="py-6 md:py-0 md:pb-[40px] flex items-center mt-6">
-            <h2 class="text-lg leading-5 font-semibold uppercase">
-              {title}
-            </h2>
-
-            <div class="bg-[#e5e5ea] h-[1px] w-full ml-4"></div>
-          </div>
-        )}
-      <div
-        class={`grid gap-4 md:gap-6 ${
-          MOBILE_COLUMNS[itemsPerLine.mobile ?? 2]
-        } ${DESKTOP_COLUMNS[itemsPerLine.desktop ?? 4]}`}
-      >
-        {banners.map(({ href, srcMobile, srcDesktop, alt }) => (
-          <a
-            href={href}
-            class={`overflow-hidden ${
-              RADIUS_MOBILE[borderRadius.mobile ?? "none"]
-            } ${RADIUS_DESKTOP[borderRadius.desktop ?? "none"]} `}
-          >
-            <Picture>
-              <Source
-                media="(max-width: 767px)"
-                src={srcMobile}
-                width={100}
-                height={100}
-              />
-              <Source
-                media="(min-width: 768px)"
-                src={srcDesktop ? srcDesktop : srcMobile}
-                width={250}
-                height={250}
-              />
-              <img
-                class="w-full"
-                sizes="(max-width: 640px) 100vw, 30vw"
-                src={srcMobile}
-                alt={alt}
-                decoding="async"
-                loading="lazy"
-              />
-            </Picture>
-          </a>
-        ))}
-      </div>
-    </section>
+    <a
+      href={action?.href ?? "#"}
+      aria-label={action?.label}
+      class="relative h-[600px] overflow-y-hidden w-full"
+    >
+      <Picture preload={lcp}>
+        <Source
+          media="(max-width: 767px)"
+          fetchPriority={lcp ? "high" : "auto"}
+          src={mobile}
+          width={360}
+          height={600}
+        />
+        <Source
+          media="(min-width: 768px)"
+          fetchPriority={lcp ? "high" : "auto"}
+          src={desktop}
+          width={1440}
+          height={600}
+        />
+        <img
+          class="object-cover w-full"
+          loading={lcp ? "eager" : "lazy"}
+          src={desktop}
+          alt={alt}
+        />
+      </Picture>
+      {action && (
+        <div class="absolute top-0 bottom-0 m-auto left-0 right-0 sm:right-auto sm:left-[12%] max-h-min max-w-[235px] flex flex-col gap-4 p-4 rounded glass">
+          <span class="text-6xl font-medium text-base-100">
+            {action.title}
+          </span>
+          <span class="font-medium text-xl text-base-100">
+            {action.subTitle}
+          </span>
+          <Button class="glass">{action.label}</Button>
+        </div>
+      )}
+    </a>
   );
 }
+
+function Dots({ images, interval = 0 }: Props) {
+  return (
+    <>
+      <style
+        dangerouslySetInnerHTML={{
+          __html: `
+          @property --dot-progress {
+            syntax: '<percentage>';
+            inherits: false;
+            initial-value: 0%;
+          }
+          `,
+        }}
+      />
+      <ul class="carousel justify-center col-span-full gap-4 z-10 row-start-4">
+        {images?.map((_, index) => (
+          <li class="carousel-item">
+            <Slider.Dot index={index}>
+              <div class="py-5">
+                <div
+                  class="w-16 sm:w-20 h-0.5 rounded group-disabled:animate-progress bg-gradient-to-r from-base-100 from-[length:var(--dot-progress)] to-[rgba(255,255,255,0.4)] to-[length:var(--dot-progress)]"
+                  style={{ animationDuration: `${interval}s` }}
+                />
+              </div>
+            </Slider.Dot>
+          </li>
+        ))}
+      </ul>
+    </>
+  );
+}
+
+function Buttons() {
+  return (
+    <>
+      <div class="flex items-center justify-center z-10 col-start-1 row-start-2">
+        <Slider.PrevButton class="btn btn-circle glass">
+          <Icon
+            class="text-base-100"
+            size={20}
+            id="ChevronLeft"
+            strokeWidth={3}
+          />
+        </Slider.PrevButton>
+      </div>
+      <div class="flex items-center justify-center z-10 col-start-3 row-start-2">
+        <Slider.NextButton class="btn btn-circle glass">
+          <Icon
+            class="text-base-100"
+            size={20}
+            id="ChevronRight"
+            strokeWidth={3}
+          />
+        </Slider.NextButton>
+      </div>
+    </>
+  );
+}
+
+function BannnerGrid({ images, preload, interval }: Props) {
+  const id = useId();
+
+  return (
+    <div
+      id={id}
+      class="grid grid-cols-[48px_1fr_48px] sm:grid-cols-[120px_1fr_120px] grid-rows-[1fr_48px_1fr_64px]"
+    >
+      <Slider class="carousel carousel-center w-full col-span-full row-span-full scrollbar-none gap-6">
+        {images?.map((image, index) => (
+          <Slider.Item index={index} class="carousel-item w-full">
+            <BannerItem image={image} lcp={index === 0 && preload} />
+          </Slider.Item>
+        ))}
+      </Slider>
+
+      <Buttons />
+
+      <Dots images={images} interval={interval} />
+
+      <SliderJS rootId={id} interval={interval && interval * 1e3} infinite />
+    </div>
+  );
+}
+
+export default BannnerGrid;

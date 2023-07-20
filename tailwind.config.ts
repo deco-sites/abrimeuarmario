@@ -2,6 +2,7 @@
 export const theme = {
   "primary": "hsl(180 100% 10%)",
   "secondary": "hsl(0 39% 39%)",
+  "secondary-color": "#FF137D",
   "accent": "hsl(150 100% 50%)",
   "neutral": "hsl(0 0% 20%)",
   "base-100": "hsl(0 0% 100%)",
@@ -28,6 +29,21 @@ export default {
     // https://tailwindcss.com/docs/container#centering-by-default
     container: {
       center: true,
+    },
+    colors: {
+      "primary-color": "#FF137D",
+      "purple": "#7e5bef",
+      "black": "#131313",
+      "pink-primary": "#FF137D",
+      "orange": "#ff7849",
+      "green": "#13ce66",
+      "yellow": "#ffc82c",
+      "gray-dark": "#273444",
+      "gray": "#8492a6",
+      "gray-light": "#d3dce6",
+      "text-color": "#3F3F3F",
+      "bg-newsletter": "#F5EFEA",
+      "top-bar-text": "#FFFFFF",
     },
     extend: {
       animation: {
@@ -57,6 +73,9 @@ export default {
             "--dot-progress": "100%",
           },
         },
+      },
+      boxShadow: {
+        "menu": "0 35px 60px -15px rgba(0, 0, 0, 0.3)",
       },
     },
   },

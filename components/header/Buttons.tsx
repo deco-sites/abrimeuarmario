@@ -72,19 +72,22 @@ function CartButton() {
 
   return (
     <Button
-      class="btn-square btn-ghost relative"
+      class="btn-square btn-ghost relative w-max"
       aria-label="open cart"
       data-deco={displayCart.value && "open-cart"}
       loading={loading.value}
       onClick={onClick}
     >
-      <div class="indicator">
+      <div class="indicator gap-2.5">
         {totalItems && (
           <span class="indicator-item badge badge-secondary badge-sm">
             {totalItems > 9 ? "9+" : totalItems}
           </span>
         )}
-        <Icon id="ShoppingCart" width={20} height={20} strokeWidth={2} />
+        <span className="hidden w-auto relative top-1.5 md:block">
+          Sacola
+        </span>
+        <Icon id="ShoppingCart" width={24} height={24} strokeWidth={2} />
       </div>
     </Button>
   );
