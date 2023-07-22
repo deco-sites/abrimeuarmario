@@ -128,7 +128,6 @@ function Footer({ sections = [] }: Props) {
                   </li>
                 </ul>
               </div>
-              
             </ul>
 
             {/* Mobile view */}

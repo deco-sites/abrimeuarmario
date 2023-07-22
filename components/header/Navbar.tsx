@@ -10,7 +10,6 @@ import { useEffect, useState } from "preact/hooks";
 function Navbar({ items, searchbar }: {
   items: INavItem[];
   searchbar: SearchbarProps;
-  
 }) {
   return (
     <>
