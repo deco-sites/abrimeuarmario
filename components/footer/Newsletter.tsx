@@ -39,7 +39,7 @@ function Newsletter() {
         class="font-body text-sm text-black w-full sm:w-[445px] form-control"
         onSubmit={handleSubmit}
       >
-        <div class="flex gap-2.5">
+        <div class="flex gap-2.5 flex-col md:flex-row">
           <input
             name="email"
             class="flex-grow input input-primary rounded-none"

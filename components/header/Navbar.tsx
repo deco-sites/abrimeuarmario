@@ -10,6 +10,7 @@ import { useEffect, useState } from "preact/hooks";
 function Navbar({ items, searchbar }: {
   items: INavItem[];
   searchbar: SearchbarProps;
+  
 }) {
   return (
     <>
@@ -22,7 +23,7 @@ function Navbar({ items, searchbar }: {
         <Buttons variant="search" />
         <a
           href="/"
-          class="flex-grow inline-flex items-center"
+          class="flex-grow inline-flex items-center justify-center"
           style={{ minHeight: navbarHeight }}
           aria-label="Store logo"
         >

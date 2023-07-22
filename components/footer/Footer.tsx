@@ -21,7 +21,7 @@ const isIcon = (item: Item): item is IconItem =>
 
 function SectionItem({ item }: { item: Item }) {
   return (
-    <span class="text-primary-content">
+    <span class="text-[#000000]">
       {isIcon(item)
         ? (
           <div class="border-base-100 border border-solid py-1.5 px-2.5">
@@ -128,6 +128,7 @@ function Footer({ sections = [] }: Props) {
                   </li>
                 </ul>
               </div>
+              
             </ul>
 
             {/* Mobile view */}
