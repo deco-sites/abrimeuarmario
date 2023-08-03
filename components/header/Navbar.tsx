@@ -1,15 +1,17 @@
 import Searchbar from "$store/islands/HeaderSearchbar.tsx";
 import Buttons from "$store/islands/HeaderButton.tsx";
 import Icon from "$store/components/ui/Icon.tsx";
+import Image from "deco-sites/std/components/Image.tsx";
 import NavItem from "./NavItem.tsx";
 import { navbarHeight } from "./constants.ts";
 import type { INavItem } from "./NavItem.tsx";
 import type { Props as SearchbarProps } from "$store/components/search/Searchbar.tsx";
-import { useEffect, useState } from "preact/hooks";
 
-function Navbar({ items, searchbar }: {
+
+function Navbar({ items, searchbar, logo }: {
   items: INavItem[];
   searchbar: SearchbarProps;
+  logo?: { src: string; alt: string };
 }) {
   return (
     <>
@@ -20,14 +22,16 @@ function Navbar({ items, searchbar }: {
       >
         <Buttons variant="menu" />
         <Buttons variant="search" />
-        <a
-          href="/"
-          class="flex-grow inline-flex items-center justify-center"
-          style={{ minHeight: navbarHeight }}
-          aria-label="Store logo"
-        >
-          <Icon id="Logo" width={126} height={16} />
-        </a>
+        {logo && (
+          <a
+            href="/"
+            class="flex-grow inline-flex items-center"
+            style={{ minHeight: navbarHeight }}
+            aria-label="Store logo"
+          >
+            <Image src={logo.src} alt={logo.alt} width={126} height={40} />
+          </a>
+        )}
 
         <div class="flex gap-1">
           <a
@@ -59,13 +63,15 @@ function Navbar({ items, searchbar }: {
             </a>
           </div>
           <div class="flex-auto w-44">
+          {logo && (
             <a
               href="/"
               aria-label="Store logo"
               class="block px-4 py-3 w-[160px]"
             >
-              <Icon id="Logo" width={126} height={16} />
+              <Image src={logo.src} alt={logo.alt} width={159} height={41} />
             </a>
+          )}
           </div>
           <div class="flex-none w-44 flex items-center justify-end gap-2">
             <Buttons variant="search" />

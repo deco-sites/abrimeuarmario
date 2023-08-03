@@ -3,13 +3,10 @@ import type { Image } from "deco-sites/std/components/types.ts";
 import type { EditableProps as SearchbarProps } from "$store/components/search/Searchbar.tsx";
 import type { LoaderReturnType } from "$live/types.ts";
 import type { Product, Suggestion } from "deco-sites/std/commerce/types.ts";
-import { h } from "preact";
-import { useEffect, useRef, useState } from "preact/hooks";
-import { RefObject } from "preact";
 
 import Alert from "./Alert.tsx";
 import Navbar from "./Navbar.tsx";
-import { headerHeight } from "./constants.ts";
+
 
 export interface NavItem {
   label: string;
@@ -48,6 +45,8 @@ export interface Props {
    * @title Enable Top Search terms
    */
   suggestions?: LoaderReturnType<Suggestion | null>;
+  /** @title Logo */
+  logo?: { src: Image; alt: string };
 }
 
 function Header(
@@ -57,43 +56,22 @@ function Header(
     products,
     navItems = [],
     suggestions,
+    logo,
   }: Props,
 ) {
   const searchbar = { ..._searchbar, products, suggestions };
-  const [scrollingMode, setScrollingMode] = useState(window.pageYOffset > 0);
-  const menuRef: RefObject<HTMLDivElement> = useRef(null);
-  const [isNotHome, setIsNotHome] = useState(true);
-
-  // lógica do scrolling mode
-  function handleScroll() {
-    const menu = menuRef.current;
-    if (menu && window.pageYOffset > 0) {
-      setScrollingMode(true);
-    } else if (menu) {
-      setScrollingMode(false);
-    }
-  }
-
-  useEffect(() => {
-    globalThis.addEventListener("scroll", handleScroll);
-    setIsNotHome(globalThis.location.pathname !== "/");
-  }, []);
-
-  const topDistance = scrollingMode ? "top-0 bg-primary" : "top-[24px]";
-  const headerClass = isNotHome ? `h-[87px] sm:h-[${headerHeight}]` : "";
-
   return (
     <>
       {/* class="absolute h-28 bg-transparent w-screen" */}
 
-      <header class={``}>
+      <header>
         <div class="bg-default w-full">
           <Alert alerts={alerts} />
           <div
-            class={`fixed w-full z-50 ${topDistance} ease-in duration-300 hover:bg-[#ffffff] `}
-            ref={menuRef}
+            class={`fixed w-full z-50  ease-in duration-300 hover:bg-[#ffffff] `}
+            
           >
-            <Navbar items={navItems} searchbar={searchbar} />
+            <Navbar items={navItems} searchbar={searchbar} logo={logo} />
           </div>
         </div>
 
