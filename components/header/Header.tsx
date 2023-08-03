@@ -7,7 +7,6 @@ import type { Product, Suggestion } from "deco-sites/std/commerce/types.ts";
 import Alert from "./Alert.tsx";
 import Navbar from "./Navbar.tsx";
 
-
 export interface NavItem {
   label: string;
   href: string;
@@ -69,7 +68,6 @@ function Header(
           <Alert alerts={alerts} />
           <div
             class={`fixed w-full z-50  ease-in duration-300 hover:bg-[#ffffff] `}
-            
           >
             <Navbar items={navItems} searchbar={searchbar} logo={logo} />
           </div>

@@ -7,7 +7,6 @@ import { navbarHeight } from "./constants.ts";
 import type { INavItem } from "./NavItem.tsx";
 import type { Props as SearchbarProps } from "$store/components/search/Searchbar.tsx";
 
-
 function Navbar({ items, searchbar, logo }: {
   items: INavItem[];
   searchbar: SearchbarProps;
@@ -63,15 +62,15 @@ function Navbar({ items, searchbar, logo }: {
             </a>
           </div>
           <div class="flex-auto w-44">
-          {logo && (
-            <a
-              href="/"
-              aria-label="Store logo"
-              class="block px-4 py-3 w-[160px]"
-            >
-              <Image src={logo.src} alt={logo.alt} width={159} height={41} />
-            </a>
-          )}
+            {logo && (
+              <a
+                href="/"
+                aria-label="Store logo"
+                class="block px-4 py-3 w-[160px]"
+              >
+                <Image src={logo.src} alt={logo.alt} width={159} height={41} />
+              </a>
+            )}
           </div>
           <div class="flex-none w-44 flex items-center justify-end gap-2">
             <Buttons variant="search" />
